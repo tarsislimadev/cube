@@ -1,0 +1,5 @@
+# Cube
+
+## License
+
+[MIT](./LICENSE)
