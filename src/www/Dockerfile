@@ -4,4 +4,4 @@ WORKDIR /app
 
 COPY . .
 
-CMD npx serve . -p 80
+CMD npx live-server --port=80
