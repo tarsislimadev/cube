@@ -2,51 +2,14 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
 
+import { planesInCube, squaresInCube } from './constants.js'
+
 const __ = {
   getWidth: () => window.innerWidth,
   getHeight: () => window.innerHeight,
   getSide: () => THREE.DoubleSide,
   getPI: () => Math.PI / 2,
 }
-
-const planesInCube = [
-  [+0.0, +0.0, +0.5, +0.0, +0.0, +0.0,], // red
-  [+0.5, +0.0, +0.0, +0.0, +Math.PI / 2, +0.0,], // blue
-  [+0.0, +0.5, +0.0, +Math.PI / 2, +0.0, +0.0,], // white
-  [-0.5, +0.0, +0.0, +0.0, +Math.PI / 2, +0.0,], // green
-  [+0.0, +0.0, -0.5, +0.0, +0.0, +0.0,], // orange
-  [+0.0, -0.5, +0.0, -Math.PI / 2, +0.0, +0.0,], // yellow
-]
-
-const squaresInCube = [
-  [-1, -1, -1,],
-  [+0, -1, -1,],
-  [+1, -1, -1,],
-  [-1, +0, -1,],
-  [+0, +0, -1,],
-  [+1, +0, -1,],
-  [-1, +1, -1,],
-  [+0, +1, -1,],
-  [+1, +1, -1,],
-  [-1, -1, +0,],
-  [+0, -1, +0,],
-  [+1, -1, +0,],
-  [-1, +0, +0,],
-  [+0, +0, +0,],
-  [+1, +0, +0,],
-  [-1, +1, +0,],
-  [+0, +1, +0,],
-  [+1, +1, +0,],
-  [-1, -1, +1,],
-  [+0, -1, +1,],
-  [+1, -1, +1,],
-  [-1, +0, +1,],
-  [+0, +0, +1,],
-  [+1, +0, +1,],
-  [-1, +1, +1,],
-  [+0, +1, +1,],
-  [+1, +1, +1,],
-]
 
 const gui = new dat.GUI()
 
