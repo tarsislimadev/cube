@@ -1,7 +1,5 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
-import * as dat from 'dat.gui'
-
 import { planesInCube, squaresInCube } from './constants.js'
 
 const __ = {
@@ -11,22 +9,7 @@ const __ = {
   getPI: () => Math.PI / 2,
 }
 
-const gui = new dat.GUI()
-
-const createFolder = (name = Date.now(), mesh = new THREE.Mesh()) => {
-  const folder = gui.addFolder(name)
-
-  folder.add(mesh.position, 'x', -Math.PI, Math.PI, Math.PI / 12).name('pos x')
-  folder.add(mesh.position, 'y', -Math.PI, Math.PI, Math.PI / 12).name('pos y')
-  folder.add(mesh.position, 'z', -Math.PI, Math.PI, Math.PI / 12).name('pos z')
-
-  folder.add(mesh.rotation, 'x', -Math.PI, Math.PI, Math.PI / 12).name('rot x')
-  folder.add(mesh.rotation, 'y', -Math.PI, Math.PI, Math.PI / 12).name('rot y')
-  folder.add(mesh.rotation, 'z', -Math.PI, Math.PI, Math.PI / 12).name('rot z')
-}
-
 const scene = new THREE.Scene()
-
 const camera = new THREE.PerspectiveCamera(75, __.getWidth() / __.getHeight(), 1e-1, 1e4)
 camera.position.set(+2.5, +2.5, +2.5)
 
