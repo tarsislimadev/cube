@@ -9,6 +9,7 @@
   <script type="importmap">
   {
     "imports": {
+      "@brtmvdl/frontend": "./libs/@brtmvdl/frontend/src/index.js",
       "socket.io-client": "https://cdn.socket.io/4.3.2/socket.io.esm.min.js",
       "three": "./libs/three/build/three.module.js",
       "three/addons/": "./libs/three/examples/jsm/",
@@ -19,7 +20,9 @@
 </head>
 
 <body>
-  <script type="module" src="./index.js"></script>
+  <div id="app"></div>
+
+  <script type="module" src="./joystick.js"></script>
 </body>
 
 </html>

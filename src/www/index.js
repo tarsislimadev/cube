@@ -1,6 +1,18 @@
 import * as THREE from 'three'
+import { io } from 'socket.io-client'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { planesInCube, squaresInCube } from './constants.js'
+
+const socket = io('http://0.0.0.0:8000')
+
+socket.on('connection', (socket) => console.log('connection', Date.now(), socket.id))
+
+socket.on('message', (data) => console.log('message', data))
+
+window.addEventListener('click', () => {
+  console.log('message', 'hello world')
+  socket.emit('message', { type: 'message_send', payload: 'hello world' })
+})
 
 const __ = {
   getWidth: () => window.innerWidth,

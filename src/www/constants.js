@@ -1,4 +1,3 @@
-
 export const planesInCube = [
   [+0.0, +0.0, +0.5, +0.0, +0.0, +0.0,], // red
   [+0.5, +0.0, +0.0, +0.0, +Math.PI / 2, +0.0,], // blue
@@ -36,4 +35,13 @@ export const squaresInCube = [
   [-1, +1, +1,],
   [+0, +1, +1,],
   [+1, +1, +1,],
+]
+
+export const buttons = [
+  { text: 'front' },
+  { text: 'back' },
+  { text: 'right' },
+  { text: 'left' },
+  { text: 'up' },
+  { text: 'down' },
 ]
