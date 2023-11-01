@@ -1,5 +1,5 @@
 // 
 
-module.exports.PORT = 80
+module.exports.PORT = process.env.PORT || 80
 
-module.exports.OPTS = { cors: { origin: 'http://0.0.0.0:8080' } }
+module.exports.OPTS = { cors: { origin: '*' } }
