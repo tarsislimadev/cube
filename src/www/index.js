@@ -1,18 +1,6 @@
 import * as THREE from 'three'
-import { io } from 'socket.io-client'
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
-import { planesInCube, squaresInCube } from './constants.js'
-
-const socket = io('http://0.0.0.0:8000')
-
-socket.on('connection', (socket) => console.log('connection', Date.now(), socket.id))
-
-socket.on('message', (data) => console.log('message', data))
-
-window.addEventListener('click', () => {
-  console.log('message', 'hello world')
-  socket.emit('message', { type: 'message_send', payload: 'hello world' })
-})
+import { ArcballControls } from 'three/addons/controls/ArcballControls.js';
+import { planesInCube } from './constants.js'
 
 const __ = {
   getWidth: () => window.innerWidth,
@@ -23,7 +11,7 @@ const __ = {
 
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(75, __.getWidth() / __.getHeight(), 1e-1, 1e4)
-camera.position.set(+2.5, +2.5, +2.5)
+camera.position.set(+7.5, +7.5, +7.5)
 
 const renderer = new THREE.WebGLRenderer()
 renderer.setSize(__.getWidth(), __.getHeight())
@@ -47,8 +35,12 @@ const createSquare = (...colors) => {
   colors.map((color, ix) => {
     const plane = createPlane(color)
     group.add(plane)
+
     plane.position.set(planesInCube[ix][0], planesInCube[ix][1], planesInCube[ix][2],)
+    plane.userData['position'] = [planesInCube[ix][0], planesInCube[ix][1], planesInCube[ix][2],]
+
     plane.rotation.set(planesInCube[ix][3], planesInCube[ix][4], planesInCube[ix][5],)
+    plane.userData['rotation'] = [planesInCube[ix][3], planesInCube[ix][4], planesInCube[ix][5],]
 
     return plane
   })
@@ -59,26 +51,27 @@ const createSquare = (...colors) => {
 const cube = new THREE.Group()
 scene.add(cube)
 
-Array.from(Array(27)).map((_, ix) => {
-  const sqare = createSquare(
-    0xff0000, // red
-    0x0000ff, // blue
-    0xffffff, // white
-    0x00ff00, // green
-    0xff9900, // orange
-    0xffff00, // yellow
-  )
+Array.from(Array(3)).map((_x, x) => {
+  Array.from(Array(3)).map((_y, y) => {
+    Array.from(Array(3)).map((_z, z) => {
+      const square = createSquare(
+        0xff0000,
+        0x0000ff,
+        0xffffff,
+        0x00ff00,
+        0xff9900,
+        0xffff00,
+      )
 
-  sqare.position.set(
-    squaresInCube[ix][0] * +1.1,
-    squaresInCube[ix][1] * +1.1,
-    squaresInCube[ix][2] * +1.1,
-  )
+      square.userData['position'] = [x, y, z].map((ix) => (ix - 1) * 1.1)
+      square.position.set(...[x, y, z].map((ix) => (ix - 1) * 1.1))
 
-  cube.add(sqare)
+      cube.add(square)
+    })
+  })
 })
 
-const controls = new OrbitControls(camera, renderer.domElement)
+const controls = new ArcballControls(camera, renderer.domElement, scene)
 
 const animate = () => {
   controls.update()
@@ -87,3 +80,40 @@ const animate = () => {
 }
 
 animate()
+
+const moves = {
+  // normals
+  'front': () => console.log('front'),
+  'back': () => { },
+  'left': () => { },
+  'right': () => {
+    Array.from(cube.children).filter((_, ix) => ix === 0).map((square, ix) => {
+      console.log({ square, ix })
+    })
+  },
+  'up': () => { },
+  'down': () => { },
+  // reverses
+  '_front': () => { },
+  '_back': () => console.log('back reverse'),
+  '_left': () => { },
+  '_right': () => { },
+  '_up': () => { },
+  '_down': () => { },
+}
+
+const keysFunctions = {
+  'f': 'front',
+  'b': 'back',
+  'l': 'left',
+  'r': 'right',
+  'u': 'up',
+  'd': 'down',
+}
+
+window.addEventListener('keydown', ({ key, shiftKey }) => {
+  const fn = (shiftKey ? '_' : '') + keysFunctions[key.toLocaleLowerCase()]
+  moves[fn]?.()
+
+  if (key === 'Escape') controls.reset()
+})
